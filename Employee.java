@@ -1,4 +1,8 @@
-package employeeWageBuilder;
+
+
+import java.util.LinkedList;
+
+//import employeeWageBuilder.Employee.CompanyEmpWage;
 
 public class Employee {
 	
@@ -35,26 +39,27 @@ public class Employee {
 	
 
 	private int numOfCompany = 0;	
-	private CompanyEmpWage[] companyEmpWageArray;
+	private LinkedList<CompanyEmpWage> companyEmpWageList;
 
 	public Employee() {
 
-		companyEmpWageArray = new CompanyEmpWage[5];
+		companyEmpWageList = new LinkedList<>();
 	}
 
 
 
 	private void addCompanyEmpWage(String company,int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth){
 
-		companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company,empRatePerHour,numOfWorkingDays,maxHoursPerMonth);
-		numOfCompany++;
+		CompanyEmpWage companyEmpWage = new CompanyEmpWage(company,empRatePerHour,numOfWorkingDays,maxHoursPerMonth);
+		companyEmpWageList.add(companyEmpWage);
 	}
 
 	private void computeEmpWage(){
 	
-		for (int i = 0;i<numOfCompany; i++){
-			companyEmpWageArray[i].setTotalEmpWage(this.CalcEmployeeWageForCompany(companyEmpWageArray[i]));
-			System.out.println(companyEmpWageArray[i]);
+		for (int i = 0;i<companyEmpWageList.size(); i++){
+			CompanyEmpWage companyEmpWage = companyEmpWageList.get(i);
+			companyEmpWage.setTotalEmpWage(this.CalcEmployeeWageForCompany(companyEmpWage));
+			System.out.println(companyEmpWage);
 		}
 
 
@@ -94,7 +99,7 @@ public class Employee {
 				}
 			empWage = empHrs*a.empRate;
 			totalEmpWage += empWage;
-			System.out.println("Day#: " + i +"Emp Hr: "+empHrs);		
+			//System.out.println("Day#: " + i +"Emp Hr: "+empHrs);		
 					
 			
 		}
