@@ -33,11 +33,16 @@ public class Employee {
 				break;
 
 
+			
 			}
-
-
+			if(empHrs >= 100){
+				System.out.println("100 hrs of work done!!!!");
+				break;	
+				}
 			empWage = empHrs*EMP_RATE_PER_HOUR;
 			totalEmpWage += empWage;
+					
+					
 			
 		}
 		
@@ -48,5 +53,7 @@ public class Employee {
 
 
 	}
+
+
 
 }
