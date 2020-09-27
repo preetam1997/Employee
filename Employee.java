@@ -1,14 +1,17 @@
+package employeeWageBuilder;
 
-
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
-//import employeeWageBuilder.Employee.CompanyEmpWage;
+import employeeWageBuilder.Employee.CompanyEmpWage;
 
-public class Employee {
+public class Employee implements InterfaceClass{
 	
 	public static final int IS_PART_TIME = 1;
 	public static final int IS_FULL_TIME = 2;
-
+	
+	
 	public class CompanyEmpWage{
 
 
@@ -17,9 +20,10 @@ public class Employee {
 	public final int numOfDays;
 	public final int maxHrs;
 	public int totalEmpWage;
+	public LinkedList<Integer> companyEmpDailyWageList;
 	
 	public CompanyEmpWage(String company, int empRate, int numOfDays, int maxHrs ){
-
+		companyEmpDailyWageList = new LinkedList<>();
 		this.company = company;
 		this.empRate = empRate;
 		this.numOfDays = numOfDays;
@@ -40,21 +44,27 @@ public class Employee {
 
 	private int numOfCompany = 0;	
 	private LinkedList<CompanyEmpWage> companyEmpWageList;
-
+	private Map<String,CompanyEmpWage> companyToEmpWageMap;
+	
 	public Employee() {
 
 		companyEmpWageList = new LinkedList<>();
+		companyToEmpWageMap = new HashMap<>();
 	}
 
 
 
-	private void addCompanyEmpWage(String company,int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth){
+	public void addCompanyEmpWage(String company,int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth){
 
 		CompanyEmpWage companyEmpWage = new CompanyEmpWage(company,empRatePerHour,numOfWorkingDays,maxHoursPerMonth);
 		companyEmpWageList.add(companyEmpWage);
+		companyToEmpWageMap.put(company, companyEmpWage);
+		
 	}
+	
 
-	private void computeEmpWage(){
+
+	public void computeEmpWage(){
 	
 		for (int i = 0;i<companyEmpWageList.size(); i++){
 			CompanyEmpWage companyEmpWage = companyEmpWageList.get(i);
@@ -64,7 +74,19 @@ public class Employee {
 
 
 	}
-
+	
+	public  int getTotalWage(String company) {
+		
+		return companyToEmpWageMap.get(company).totalEmpWage;
+		
+	}
+	
+	public LinkedList<Integer> getCompanyDailyWAge(String company) {
+		
+		System.out.println("Printing Daily Wage For Company : "+ company);
+		return companyToEmpWageMap.get(company).companyEmpDailyWageList;
+		
+	}
 
 	public int CalcEmployeeWageForCompany(CompanyEmpWage a){
 
@@ -99,8 +121,8 @@ public class Employee {
 				}
 			empWage = empHrs*a.empRate;
 			totalEmpWage += empWage;
-			//System.out.println("Day#: " + i +"Emp Hr: "+empHrs);		
-					
+			//System.out.println("Day#: " + i +"Emp Hr: "+empHrs + "Employee WAge for that day" + empWage);		
+			a.companyEmpDailyWageList.add(empWage);	
 			
 		}
 		
@@ -115,10 +137,14 @@ public class Employee {
 	public static void main(String[] args){
 
 		Employee empWageBuilder = new Employee();
-		empWageBuilder.addCompanyEmpWage("DMart", 20, 2, 10);
-		empWageBuilder.addCompanyEmpWage("Reliance", 10, 4, 20);
+		//private void addCompanyEmpWage(String company,int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth)
+		empWageBuilder.addCompanyEmpWage("DMart", 20, 10, 80);
+		empWageBuilder.addCompanyEmpWage("Reliance", 10,7, 70);
 		empWageBuilder.computeEmpWage();
-
+		System.out.println("Total Wage for DMart Company: " + empWageBuilder.getTotalWage("DMart"));
+		
+		LinkedList<Integer> k = empWageBuilder.getCompanyDailyWAge("DMart");
+		System.out.println(k);
 	}
 		
 }
